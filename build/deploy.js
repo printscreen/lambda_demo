@@ -9,7 +9,7 @@ var s3 = new aws.S3({
 	region: 'us-east-1'
 });
 
-fs.readFile('../lambda.zip', function (err, data) {
+fs.readFile('lambda.zip', function (err, data) {
   	if (err) {
   		throw err;
   	}
