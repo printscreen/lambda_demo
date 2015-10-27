@@ -5,7 +5,9 @@ var args = process.argv.slice(2),
 
 aws.config.update({ accessKeyId: args[0], secretAccessKey: args[1] });
 
-var lambda = new aws.Lambda();
+var lambda = new aws.Lambda({
+	region: 'us-east-1'
+});
 
 fs.readFile('lambda.zip', function (err, data) {
   	if (err) {
