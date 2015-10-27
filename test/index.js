@@ -1,11 +1,11 @@
 var assert = require('assert'),
 	_ = require('lodash'),
 	nodemock = require('nodemock'),
-	model = require('../index.js');
+	model = require('../auth.js');
 
-describe('Testing init function', function () {
+describe('Testing create toekn function', function () {
 	it('Will successfully call all helper functions', function (done) {
-		var testObj = _.cloneDeep(model),
+		var auth = new model(),
 			mocked = {},
 			context = {
 				done: function (error, result) {
@@ -27,31 +27,14 @@ describe('Testing init function', function () {
 				.calls(1, ['', true])
 				.times(1);
 
-		testObj.handler.getApiUser = mocked.getApiUser;
-		testObj.handler.isValidApiKey = mocked.isValidApiKey;
-		testObj.handler.generateKey = mocked.generateKey;
+		auth.getApiUser = mocked.getApiUser;
+		auth.isValidApiKey = mocked.isValidApiKey;
+		auth.generateKey = mocked.generateKey;
 
-		var test = new testObj.handler({
+		auth.createToken({
 			apiKey: 'test',
 			secret: 'test',
 			user: 'test'
 		}, context);
 	});
 });
-
-
-/*
-
-var Auth = function(event, context) {
-    var self = this;
-    this._dynamo = dynamodb;
-    async.waterfall([
-        self.getApiUser.bind(self, event.apiKey),
-        self.isValidApiKey.bind(self, event.secret),
-        self.generateKey.bind(self, event.user)
-    ], function (error, result) {
-        console.log(error, result);
-        context.done(error, result);
-    });
-}
-*/
