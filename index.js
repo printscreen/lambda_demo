@@ -1,4 +1,4 @@
-var auth = require('auth.js');
+var auth = require('./auth.js');
 
 exports.handler = function (event, context) {
     var auth = new Auth();
