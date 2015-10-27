@@ -5,22 +5,20 @@ var args = process.argv.slice(2),
 
 aws.config.update({ accessKeyId: args[0], secretAccessKey: args[1] });
 
-var s3 = new aws.S3({
-	region: 'us-east-1'
-});
+var lambda = new aws.Lambda();
 
 fs.readFile('lambda.zip', function (err, data) {
   	if (err) {
   		throw err;
   	}
 
-  	s3.putObject({
-		Bucket: 'pitboss-lambda-prototype',
-		Body: data,
-		Key: 'lambda.zip',
-		ContentType: 'application/zip',
-		ACL: 'public-read'
-	}, function (error, result) {
-		console.log(error, result);
+  	var params = {
+		FunctionName: 'PitbossTest',
+		Publish: true,
+		ZipFile: data
+	};
+	lambda.updateFunctionCode(params, function(err, data) {
+	  if (err) console.log(err, err.stack); // an error occurred
+	  else     console.log(data);           // successful response
 	});
 });
